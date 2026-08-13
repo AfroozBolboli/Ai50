@@ -24,14 +24,14 @@ def player(board):
     Returns player who has the next turn on a board.
     """
 
-    # Count the empty cells in the board
+    # Count the empty cells in the board.
     empty_count = 0
     for row in board:
         for cell in row:
             if cell == EMPTY:
                 empty_count += 1
 
-    # If empty cells are odd then it is X's turn, otherwise it is O's turn
+    # If empty cells counts are odd then it is X's turn; otherwise it is O's turn.
     if empty_count == 0:
         raise Exception("No empty slots.")
     elif empty_count % 2 == 0:
@@ -45,8 +45,15 @@ def actions(board):
     Returns set of all possible actions (i, j) available on the board.
     i is row j is column range 0, 1, and 2
     """
-    # Basically return the coordinates of empties
-    raise NotImplementedError
+    # Find the coordinate/index of EMPTY in board
+    possible_actions = set()
+
+    for i,row in enumerate(board):
+        for j, cell in enumerate(row):
+            if cell == EMPTY:
+                possible_actions.add((i,j))
+
+    return possible_actions
 
 
 def result(board, action):
