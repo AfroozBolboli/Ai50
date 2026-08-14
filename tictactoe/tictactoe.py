@@ -25,6 +25,8 @@ def player(board):
     """
 
     # Count the empty cells in the board.
+    # count = sum([row.count(EMPTY) for row in board]) more experienced version
+
     empty_count = 0
     for row in board:
         for cell in row:
@@ -68,10 +70,37 @@ def winner(board):
     Returns the winner of the game, if there is one.
     One can win the game with three of their moves in 
     a row horizontally, vertically, or diagonally.
-    """
-    #there will be at most one winner 
-    raise NotImplementedError
 
+    horizontally
+    i i+1 i+2 
+
+    vertically
+    j j+1 j+2
+    row[i]==row[i+3]==row[i+6] 
+
+    diagonally 
+    row[0] == row[4] == row[8]
+    row[2] == row[4] == row[6]
+    """
+    #There will be at most one winner 
+
+    for row in board:
+        one_list = []
+        one_list = one_list + row
+
+    for i in range(row):
+        # Horizontally
+        if row[i]==row[i+3]==row[i+6]:
+            return row[i]
+        # Vertically 
+        if row[i] == row[i+1] == row[i+2]:
+            return row[i]
+        
+    if one_list[0] == one_list[4] == one_list[8]:
+        return one_list[0]
+    if one_list[2] == one_list[4] == one_list[6]:
+        return one_list[2]
+        
 
 def terminal(board):
     """
