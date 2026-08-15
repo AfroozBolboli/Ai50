@@ -98,6 +98,8 @@ def winner(board):
     """
     #There will be at most one winner 
     
+    # bug: Diagonal doesn't work out of range 
+     
     # Horizontally
     for row in board:
         if row[0] == row[1] == row[2]:
@@ -105,17 +107,22 @@ def winner(board):
 
     # Vertically
     row = 0
-    for column in range(row):
+    for column in range(0,3):
         if board[row][column] == board[row+1][column] == board[row+2][column]:
             return board[row][column]
         row = 0
 
     # Diagonally row[i+1] column[j+4]
     row = 0
-    for column in range(row):
+    for column in range(0,3):
         if board[row][column] == board[row+1][column+4] == board[row+2][column+8]:
             return board[row][column]
         row = 0
+
+    # No winner so far and is in the terminal then it must be a draw
+    if terminal(board):
+        return "Draw"
+
 
 
 def terminal(board):
