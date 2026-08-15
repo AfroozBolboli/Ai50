@@ -84,22 +84,24 @@ def winner(board):
     """
     #There will be at most one winner 
 
+    # Horizontally
     for row in board:
-        one_list = []
-        one_list = one_list + row
+        if row[0] == row[1] == row[2]:
+            return row[0]
 
-    for i in range(row):
-        # Horizontally
-        if row[i]==row[i+3]==row[i+6]:
-            return row[i]
-        # Vertically 
-        if row[i] == row[i+1] == row[i+2]:
-            return row[i]
-        
-    if one_list[0] == one_list[4] == one_list[8]:
-        return one_list[0]
-    if one_list[2] == one_list[4] == one_list[6]:
-        return one_list[2]
+    # Vertically
+    row = 0
+    for column in range(row):
+        if board[row][column] == board[row+1][column] == board[row+2][column]:
+            return board[row][column]
+        row = 0
+
+    # Diagonally row[i+1] column[j+4]
+    row = 0
+    for column in range(row):
+        if board[row][column] == board[row+1][column+4] == board[row+2][column+8]:
+            return board[row][column]
+        row = 0
         
 
 def terminal(board):
