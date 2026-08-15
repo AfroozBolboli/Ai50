@@ -63,7 +63,7 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    
+
     # Check if action is valid
     i = action[0]
     j = action[1]
@@ -123,12 +123,11 @@ def terminal(board):
     Returns True if game is over, False otherwise.
     """
 
-    print("I am in terminal function")
-    if not EMPTY in board:
+    count_empty = sum(row.count(EMPTY) for row in board)
+    if count_empty == 0:
         return True
-    else:
+    else: 
         return False
-
 
 
 def utility(board):
