@@ -103,26 +103,40 @@ def winner(board):
     # Horizontally
     for row in board:
         if row[0] == row[1] == row[2]:
+            print("Horizontal")
             return row[0]
 
     # Vertically
     row = 0
-    for column in range(0,3):
+    for column in range(len(board)):
         if board[row][column] == board[row+1][column] == board[row+2][column]:
+            print("Vertical")
             return board[row][column]
         row = 0
 
-    # Diagonally row[i+1] column[j+4]
-    row = 0
-    for column in range(0,3):
-        if board[row][column] == board[row+1][column+4] == board[row+2][column+8]:
-            return board[row][column]
-        row = 0
+    # Diagonally 
+    # (0,0) (1,1) (2,2) Column is in the same order of the row.
+    diagonal = set()
+    for i in range(len(board)):
+        diagonal.add(board[i][i])
+        
+    if len(diagonal) == 1:
+        print("Diagonal")
+        return board[i][i]
+
+    # Anti-Diagonal 
+    # (0,2) (1,1) (2,0) Column is in reverse order of the row.
+    anti_diagonal = set()
+    for i,j in zip(range(len(board)), range(len(board)-1,-1,-1)):
+        anti_diagonal.add(board[i][j])
+        
+    if len(anti_diagonal) == 1:
+        print("Anti-Diagonal")
+        return board[i][j]
 
     # No winner so far and is in the terminal then it must be a draw
     if terminal(board):
         return "Draw"
-
 
 
 def terminal(board):
