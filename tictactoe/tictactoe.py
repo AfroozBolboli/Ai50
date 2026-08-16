@@ -62,19 +62,20 @@ def actions(board):
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
-    """
+    """ 
 
     # Check if action is valid
     i = action[0]
     j = action[1]
-    if 0 < i or i > 2 or j < 0 or j > 2:
+    print("THIS IS THE ACTION", action)
+    if i < 0 or i > 2 or j < 0 or j > 2:
         raise Exception("Invalid Action")
 
     copy_board = copy.deepcopy(board)
 
     # Check if that slot is empty
     if board[i][j] == EMPTY:
-        board[i][j] == action
+        copy_board[i][j] = player(board)
 
     return copy_board
 
@@ -131,9 +132,11 @@ def winner(board):
         print("Anti-Diagonal")
         return board[i][j]
 
+    """
     # No winner so far and is in the terminal then it must be a draw
     if terminal(board):
-        return "Draw"
+        return "Draw
+    """
 
     # The game has not ended yet
     return False
@@ -142,15 +145,17 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    winner = winner(board)
-
-    # There is a winner, so game is over .
-    if winner != False:
-        return True
+    
 
     # No winner but all states are full, then game is over.
     count_empty = sum(row.count(EMPTY) for row in board)
     if count_empty == 0:
+        return True
+    elif count_empty == 9:
+        return False
+    
+    # There is a winner, so game is over .
+    if winner(board) != False:
         return True
 
     # Game is ongoing.
