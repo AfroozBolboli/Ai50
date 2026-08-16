@@ -171,14 +171,50 @@ def utility(board):
     elif winner == "Draw":
         return 0
 
+def _min_value(board,actions):
+    """
+    Returns the board in which opponent gets minimum value.
+    """
+
+    if terminal(board):
+        return utility(board)
+    
+    v = float('+inf')
+
+    for action in actions:
+        v = max(v, _max_value(result(board, action)))
+    return v
+
+def _max_value(board, actions):
+    """
+    Return the board in which player gets the maximum value
+    """
+
+    if terminal(board):
+        return utility(board)
+    
+    v = float('-inf')
+
+    for action in actions:
+        v = min(v, _min_value(board, result(board, action)))
+
+    return v
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-
+    player = player(board)
+    actions = actions(board)
+    if player == "O":
+        _min_value(board, actions)
+    elif player == "X":
+        _max_value(board, actions)
+    
     """
     The move returned should be the optimal action (i, j) that is one of the allowable actions on the board. If multiple moves are equally optimal, any of those moves is acceptable.
     If the board is a terminal board, the minimax function should return None.
     """
-    raise NotImplementedError
+    if terminal(board):
+        return None
+
