@@ -97,9 +97,6 @@ def winner(board):
     row[2] == row[4] == row[6]
     """
     #There will be at most one winner 
-    
-    # bug: Diagonal doesn't work out of range 
-     
     # Horizontally
     for row in board:
         if row[0] == row[1] == row[2]:
@@ -138,12 +135,14 @@ def winner(board):
     if terminal(board):
         return "Draw"
 
+    # The game has not ended yet
+    return False
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-
+    winner = winner(board)
     count_empty = sum(row.count(EMPTY) for row in board)
     if count_empty == 0:
         return True
