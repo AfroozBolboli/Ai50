@@ -143,11 +143,18 @@ def terminal(board):
     Returns True if game is over, False otherwise.
     """
     winner = winner(board)
+
+    # There is a winner, so game is over .
+    if winner != False:
+        return True
+
+    # No winner but all states are full, then game is over.
     count_empty = sum(row.count(EMPTY) for row in board)
     if count_empty == 0:
         return True
-    else: 
-        return False
+
+    # Game is ongoing.
+    return False
 
 
 def utility(board):
