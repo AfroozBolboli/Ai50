@@ -35,9 +35,7 @@ def player(board):
                 empty_count += 1
 
     # If empty cells counts are odd then it is X's turn; otherwise it is O's turn.
-    if empty_count == 0:
-        raise Exception("No empty slots.")
-    elif empty_count % 2 == 0:
+    if empty_count % 2 == 0:
         return O
     elif empty_count % 2 == 1: 
         return X
@@ -67,7 +65,6 @@ def result(board, action):
     # Check if action is valid
     i = action[0]
     j = action[1]
-    print("THIS IS THE ACTION", action)
     if i < 0 or i > 2 or j < 0 or j > 2:
         raise Exception("Invalid Action")
 
@@ -102,7 +99,6 @@ def winner(board):
     for row in board:
         if not row.count(EMPTY):
             if row[0] == row[1] == row[2]:
-                print("Horizontal")
                 return row[0]
 
     # Vertically
@@ -110,7 +106,6 @@ def winner(board):
     for column in range(len(board)):
         if board[row][column] == board[row+1][column] == board[row+2][column]:
             if board[row][column] != EMPTY:
-                print("Vertical")
                 return board[row][column]
         row = 0
 
@@ -121,7 +116,6 @@ def winner(board):
         diagonal.add(board[i][i])
         
     if len(diagonal) == 1 and EMPTY not in diagonal:
-        print("Diagonal")
         return board[i][i]
 
     # Anti-Diagonal 
@@ -131,14 +125,13 @@ def winner(board):
         anti_diagonal.add(board[i][j])
         
     if len(anti_diagonal) == 1 and EMPTY not in anti_diagonal:
-        print("Anti-Diagonal")
         return board[i][j]
 
-    """
-    # No winner so far and is in the terminal then it must be a draw
-    if terminal(board):
-        return "Draw
-    """
+    
+    # The board is full and no winner yet so it is a Draw
+    count_empty = sum(row.count(EMPTY) for row in board)
+    if count_empty == 0:
+        return None
 
     # The game has not ended yet
     return False
@@ -147,13 +140,14 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    print("In terminal function")
     
-
     # No winner but all states are full, then game is over.
     count_empty = sum(row.count(EMPTY) for row in board)
+
+    # Board full 
     if count_empty == 0:
         return True
+    # Board completely empty
     elif count_empty == 9:
         return False
     
@@ -170,64 +164,77 @@ def utility(board):
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
     # Assuming utility will only be called on a board if terminal(board) is True
-    print("In utility function")
 
-    winner = winner(board)
-    if winner == "X":
+    current_winner = winner(board)
+    if current_winner == "X":
         return 1
-    elif winner == "O":
+    elif current_winner == "O":
         return -1
-    elif winner == "Draw":
+    elif current_winner == None:
         return 0
 
-def _min_value(board,actions):
-    """
-    Returns the board in which opponent gets minimum value.
-    """
-    print("In min value function")
 
+def mini_max(board):
+    """
+    Returns the optimal action for the current player on the board.
+    """
+
+    """
+    The move returned should be the optimal action (i, j) that is one of the allowable actions on the board. If multiple moves are equally optimal, any of those moves is acceptable.
+    If the board is a terminal board, the minimax function should return None.
+    """
+    
+    current_player = player(board)
+    current_actions = actions(board)
 
     if terminal(board):
         return utility(board)
     
-    v = float('+inf')
+    if current_player == "O":
+        min_value = float('+inf')
 
-    for action in actions:
-        v = max(v, _max_value(result(board, action)))
-    return v
+        for action in current_actions:
+            eval = mini_max(result(board, action))
+            if type(eval) == int:
+                min_value = min(min_value,eval)
+                best_action = action 
+            elif eval[0] < min_value:
+                min_value = eval[0]
+                best_action = action
+            
+        return min_value, best_action
 
-def _max_value(board, actions):
-    """
-    Return the board in which player gets the maximum value
-    """
-    print("In max value function")
-
-
-    if terminal(board):
-        return utility(board)
     
-    v = float('-inf')
-
-    for action in actions:
-        v = min(v, _min_value(board, result(board, action)))
-
-    return v
+    elif current_player == "X":   
+        max_value = float('-inf')
+    
+        for action in current_actions:
+            eval = mini_max(result(board, action))
+            if type(eval) == int:
+                max_value = max(max_value,eval)
+                best_action = action
+            elif eval[0] > max_value:
+                max_value = eval[0]
+                best_action = action
+            
+        return max_value, best_action
+        
+       
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    print("In minimax function")
 
-    if player(board) == "O":
-        _min_value(board, actions(board))
-    elif player(board) == "X":
-        _max_value(board, actions(board))
-    
     """
     The move returned should be the optimal action (i, j) that is one of the allowable actions on the board. If multiple moves are equally optimal, any of those moves is acceptable.
     If the board is a terminal board, the minimax function should return None.
     """
     if terminal(board):
         return None
+    
+    best_action = mini_max(board)[1]
+
+    return best_action
+ 
 
