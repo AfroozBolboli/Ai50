@@ -20,7 +20,6 @@ def initial_state():
 
 
 def player(board):
-
     """
     Returns player who has the next turn on a board.
     """
@@ -49,10 +48,10 @@ def actions(board):
     # Find the coordinate/index of EMPTY in board
     possible_actions = set()
 
-    for i,row in enumerate(board):
+    for i, row in enumerate(board):
         for j, cell in enumerate(row):
             if cell == EMPTY:
-                possible_actions.add((i,j))
+                possible_actions.add((i, j))
 
     return possible_actions
 
@@ -73,6 +72,8 @@ def result(board, action):
     # Check if that slot is empty
     if board[i][j] == EMPTY:
         copy_board[i][j] = player(board)
+    else:
+        raise Exception("Full slot.")
 
     return copy_board
 
@@ -121,20 +122,20 @@ def winner(board):
     # Anti-Diagonal 
     # (0,2) (1,1) (2,0) Column is in reverse order of the row.
     anti_diagonal = set()
-    for i,j in zip(range(len(board)), range(len(board)-1,-1,-1)):
+    for i, j in zip(range(len(board)), range(len(board)-1,-1,-1)):
         anti_diagonal.add(board[i][j])
         
     if len(anti_diagonal) == 1 and EMPTY not in anti_diagonal:
         return board[i][j]
 
-    
     # The board is full and no winner yet so it is a Draw
     count_empty = sum(row.count(EMPTY) for row in board)
-    if count_empty == 0:
+    if count_empty == 0 or count_empty == 9:
         return None
 
     # The game has not ended yet
     return False
+
 
 def terminal(board):
     """
@@ -196,7 +197,7 @@ def mini_max(board):
         for action in current_actions:
             eval = mini_max(result(board, action))
             if type(eval) == int:
-                min_value = min(min_value,eval)
+                min_value = min(min_value, eval)
                 best_action = action 
             elif eval[0] < min_value:
                 min_value = eval[0]
@@ -204,22 +205,20 @@ def mini_max(board):
             
         return min_value, best_action
 
-    
     elif current_player == "X":   
         max_value = float('-inf')
     
         for action in current_actions:
             eval = mini_max(result(board, action))
             if type(eval) == int:
-                max_value = max(max_value,eval)
+                max_value = max(max_value, eval)
                 best_action = action
             elif eval[0] > max_value:
                 max_value = eval[0]
                 best_action = action
             
         return max_value, best_action
-        
-       
+           
 
 def minimax(board):
     """
@@ -236,5 +235,3 @@ def minimax(board):
     best_action = mini_max(board)[1]
 
     return best_action
- 
-
