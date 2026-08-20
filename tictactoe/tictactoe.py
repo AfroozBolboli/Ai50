@@ -83,19 +83,7 @@ def winner(board):
     Returns the winner of the game, if there is one.
     One can win the game with three of their moves in 
     a row horizontally, vertically, or diagonally.
-
-    horizontally
-    i i+1 i+2 
-
-    vertically
-    j j+1 j+2
-    row[i]==row[i+3]==row[i+6] 
-
-    diagonally 
-    row[0] == row[4] == row[8]
-    row[2] == row[4] == row[6]
     """
-    # There will be at most one winner 
     # Horizontally
     for row in board:
         if not row.count(EMPTY):
@@ -111,7 +99,7 @@ def winner(board):
         row = 0
 
     # Diagonally 
-    # (0,0) (1,1) (2,2) Column is in the same order of the row.
+    # (0,0) (1,1) (2,2): Column is in the same order of the row.
     diagonal = set()
     for i in range(len(board)):
         diagonal.add(board[i][i])
@@ -120,7 +108,7 @@ def winner(board):
         return board[i][i]
 
     # Anti-Diagonal 
-    # (0,2) (1,1) (2,0) Column is in reverse order of the row.
+    # (0,2) (1,1) (2,0): Column is in reverse order of the row.
     anti_diagonal = set()
     for i, j in zip(range(len(board)), range(len(board)-1,-1,-1)):
         anti_diagonal.add(board[i][j])
@@ -142,7 +130,6 @@ def terminal(board):
     Returns True if game is over, False otherwise.
     """
     
-    # No winner but all states are full, then game is over.
     count_empty = sum(row.count(EMPTY) for row in board)
 
     # Board full 
@@ -175,14 +162,14 @@ def utility(board):
         return 0
 
 
-def mini_max(board):
+def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
 
     """
     The move returned should be the optimal action (i, j) that is one of the allowable actions on the board. If multiple moves are equally optimal, any of those moves is acceptable.
-    If the board is a terminal board, the minimax function should return None.
+    If the board is a terminal board, the best_move function should return None.
     """
     
     current_player = player(board)
@@ -195,7 +182,7 @@ def mini_max(board):
         min_value = float('+inf')
 
         for action in current_actions:
-            eval = mini_max(result(board, action))
+            eval = minimax(result(board, action))
             if type(eval) == int:
                 min_value = min(min_value, eval)
                 best_action = action 
@@ -209,7 +196,7 @@ def mini_max(board):
         max_value = float('-inf')
     
         for action in current_actions:
-            eval = mini_max(result(board, action))
+            eval = minimax(result(board, action))
             if type(eval) == int:
                 max_value = max(max_value, eval)
                 best_action = action
@@ -220,18 +207,18 @@ def mini_max(board):
         return max_value, best_action
            
 
-def minimax(board):
+def best_move(board):
     """
     Returns the optimal action for the current player on the board.
+    
+    The move returned should be the optimal action (i, j) that is one of the allowable actions on the board. 
+    If multiple moves are equally optimal, any of those moves is acceptable.
+    If the board is a terminal board, the best_move function should return None.
     """
 
-    """
-    The move returned should be the optimal action (i, j) that is one of the allowable actions on the board. If multiple moves are equally optimal, any of those moves is acceptable.
-    If the board is a terminal board, the minimax function should return None.
-    """
     if terminal(board):
         return None
     
-    best_action = mini_max(board)[1]
+    best_action = minimax(board)[1]
 
     return best_action
