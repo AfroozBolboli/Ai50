@@ -102,50 +102,35 @@ def shortest_path(source, target):
         new_path = []
 
         if frontier.empty():
-            raise Exception("NO SOLUTION")
+            return None
 
         # Person 
-        #print("COUNT:", count)
         if count != 0:
             path = frontier.remove()
-            current= path[-1]
+            current = path[-1]
             personID = current[1]
             movie = current[0]
-            #print('person is', personID, 'movie is', movie)
+
+            explored.add((movie, personID))
         else:
             personID = frontier.remove()
         
-        #print("PersonID: ",personID)
         # List of people that have co-stared with this person
         star_neighbor = neighbors_for_person(personID)
-        #print("I AM HEEERE for star neighbor",star_neighbor)
-
-        if count != 0:
-            explored.add((movie, personID))
-
-        #print("target", target)
         
         if len(star_neighbor) != 0:
             for star in star_neighbor:
-                # add those people in the explore list BFS 
+                # Add those people to the frontier list
                 if star not in explored:
-                    #print("Explored:", explored)
                     new_path = list(path)
                     new_path.append(star)
                     frontier.add(new_path)
 
         if personID == target:
-            return path       
+            return path  
+             
         count += 1
         
-        # People (Source) -> Star -> Movie -> Star -> People 
-        # Repeat until People (Target)
-        # (distance, [A,B,C,D])
-
-        
-
-    raise NotImplementedError
-
 
 def person_id_for_name(name):
     """
