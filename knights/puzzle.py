@@ -31,7 +31,14 @@ knowledge1 = And(
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    # The base rule of the world
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+    Not(And(AKnight,AKnave)),
+    Not(And(BKnight,BKnave)),
+
+    Biconditional(AKnight, Or(And(AKnight,BKnight),And(AKnave,BKnave))),
+    Biconditional(BKnight,Or(And(AKnight,BKnave),And(AKnave,BKnight)))
 )
 
 # Puzzle 3
