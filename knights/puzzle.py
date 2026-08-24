@@ -24,7 +24,13 @@ knowledge0 = And(
 # B says nothing.
 
 knowledge1 = And(
-    # TODO 
+    # The base rule of the world
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+    Not(And(AKnight,AKnave)),
+    Not(And(BKnight,BKnave)),
+
+    Biconditional(AKnight, And(AKnave,BKnave)),
 )
 
 # Puzzle 2
