@@ -53,7 +53,18 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    # The base rule of the world
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+    Or(CKnight,CKnave),
+
+    Not(And(AKnight,AKnave)),
+    Not(And(BKnight,BKnave)),
+    Not(And(CKnight,CKnave)),
+
+    Biconditional(BKnight,CKnave),
+    Biconditional(BKnight,Biconditional(AKnight,AKnave)),
+    Biconditional(CKnight,AKnight)
 )
 
 
