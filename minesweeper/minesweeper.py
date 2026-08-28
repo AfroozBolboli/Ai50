@@ -1,7 +1,20 @@
 import itertools
 import random
 
+"""
+In general, we’ll only want our sentences to be about cells that are 
+not yet known to be either safe or mines. This means that, once we 
+know whether a cell is a mine or not, we can update our sentences to 
+simplify them and potentially draw new conclusions.
 
+if variable == count all mine 
+if all variable == 0 all safe 
+
+More generally, any time we have two sentences set1 = count1 and 
+set2 = count2 where set1 is a subset of set2, then we can construct
+the new sentence set2 - set1 = count2 - count1. Consider the example 
+above to ensure you understand why that’s true.
+"""
 class Minesweeper():
     """
     Minesweeper game representation
@@ -105,18 +118,33 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be mines.
         """
-        raise NotImplementedError
+        if len(self.cells) == self.count:
+            return self.cells
+        else:
+            return set()
 
     def known_safes(self):
         """
         Returns the set of all cells in self.cells known to be safe.
         """
-        raise NotImplementedError
+        if self.count == 0:
+            return self.cells 
+        else:
+            return set()
 
     def mark_mine(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be a mine.
+        """
+        # first check to see if cell is one of the cells included in the sentence.
+
+        """
+        If cell is in the sentence, the function should update 
+        the sentence so that cell is no longer in the sentence,
+        but still represents a logically correct sentence given 
+        that cell is known to be a mine.
+        If cell is not in the sentence, then no action is necessary.
         """
         raise NotImplementedError
 
@@ -125,6 +153,8 @@ class Sentence():
         Updates internal knowledge representation given the fact that
         a cell is known to be safe.
         """
+
+        # First check to see if cell is one of the cells included in the sentence.
         raise NotImplementedError
 
 
