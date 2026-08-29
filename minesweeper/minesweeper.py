@@ -142,8 +142,6 @@ class Sentence():
         if cell in self.cells:
             self.cells.remove(cell)
             self.count -= 1
-        else:
-            None
 
 
     def mark_safe(self, cell):
