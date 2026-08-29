@@ -144,7 +144,7 @@ class Sentence():
             self.count -= 1
         else:
             None
-            
+
 
     def mark_safe(self, cell):
         """
@@ -153,7 +153,9 @@ class Sentence():
         """
 
         # First check to see if cell is one of the cells included in the sentence.
-        raise NotImplementedError
+        if cell in self.cells:
+            self.cells.remove(cell)
+            self.count -= 1 
 
 
 class MinesweeperAI():
