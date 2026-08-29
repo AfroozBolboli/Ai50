@@ -139,15 +139,12 @@ class Sentence():
         a cell is known to be a mine.
         """
         # first check to see if cell is one of the cells included in the sentence.
-
-        """
-        If cell is in the sentence, the function should update 
-        the sentence so that cell is no longer in the sentence,
-        but still represents a logically correct sentence given 
-        that cell is known to be a mine.
-        If cell is not in the sentence, then no action is necessary.
-        """
-        raise NotImplementedError
+        if cell in self.cells:
+            self.cells.remove(cell)
+            self.count -= 1
+        else:
+            None
+            
 
     def mark_safe(self, cell):
         """
