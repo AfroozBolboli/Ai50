@@ -252,4 +252,17 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        raise Exception("Not implemented yet")
+        random_moves = []
+        # Choose cells inside knowledge that are not in mine set or in moves_made list
+        for sentence in self.knowledge:
+            cells, count = sentence
+            for cell in cells:
+                if cell not in self.moves_made:
+                    if cell not in self.mines:
+                        random_moves.append(cell)
+
+        if len(random_moves) > 0:
+            return random_moves[0]
+        else:
+            return None
+
