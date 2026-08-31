@@ -202,24 +202,35 @@ class MinesweeperAI():
 
         This function should:
 
-            3) add a new sentence to the AI's knowledge base
-               based on the value of `cell` and `count`
-            4) mark any additional cells as safe or as mines
-               if it can be concluded based on the AI's knowledge base
+
             5) add any new sentences to the AI's knowledge base
                if they can be inferred from existing knowledge
         """
         # 1) mark the cell as a move that has been made
         self.moves_made.add(cell)
+
         # 2) mark the cell as safe
-        self.safes.add(cell)
-        print("I am in add_knowledge function this is cell and count", cell, count)
-        # 3) add a new sentence to the AI's knowledge base 
-        # based on the value of `cell` and `count
-        if count == 0:
-            for sentence in self.knowledge:
-                sentence.mark_safe(cell)
+        self.mark_safe(cell)
+
+        # 3) add neighbors of the cell to the self.knowledge
+        i,j = cell
+        cell_neighbors = []
+        row = i-1
+        column = j-1
+
+        # Out of range problem on the edges
+        for row in range(i-1,i+2):
+            for column in range(j-1,j+2):
+                neighbor_cell = (row,column)
+                cell_neighbors.append(neighbor_cell)
+
+        cell_neighbors.remove(cell)
+            
+        sentence = Sentence(cell_neighbors,count)
+        self.knowledge.append(sentence)
         
+        #  4) mark any additional cells as safe or as mines
+        # if it can be concluded based on the AI's knowledge base
 
     def make_safe_move(self):
         """
