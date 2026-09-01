@@ -218,20 +218,30 @@ class MinesweeperAI():
         row_range = i-1
         column_range = j-1
 
-        # Out of range problem on the edges
         for row in range(row_range,row_range+3):
             for column in range(column_range,column_range+3):
+                # Check so it is not out of range
                 if not (row < 0 or column < 0 or row > self.width or column > self.height):
-                    neighbor_cell = (row,column)
-                    cell_neighbors.append(neighbor_cell)
+                    # Only include cells whose state is still undetermined in the sentence
+                    if (row,column) not in self.mines or self.safes:
+                        neighbor_cell = (row,column)
+                        cell_neighbors.append(neighbor_cell)
 
         cell_neighbors.remove(cell)
-            
-        sentence = Sentence(cell_neighbors,count)
-        self.knowledge.append(sentence)
+
+        if len(cell_neighbors) == count:
+            for cell in cell_neighbors:
+                self.mark_mine(cell)
+        elif len(cell_neighbors) == 0:
+            for cell in cell_neighbors:
+                self.mark_safe(cell)
+        else:
+            sentence = Sentence(cell_neighbors,count)
+            self.knowledge.append(sentence)
         
-        #  4) mark any additional cells as safe or as mines
+        #  4) Mark any additional cells as safe or as mines
         # if it can be concluded based on the AI's knowledge base
+
 
     def make_safe_move(self):
         """
