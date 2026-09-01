@@ -201,10 +201,10 @@ class MinesweeperAI():
         safe cell, how many neighboring cells have mines in them.
 
         This function should:
-
+            Be sure to only include cells whose state is still undetermined in the sentence
 
             5) add any new sentences to the AI's knowledge base
-               if they can be inferred from existing knowledge
+               if they can be inferred from existing new knowledge
         """
         # 1) mark the cell as a move that has been made
         self.moves_made.add(cell)
@@ -215,14 +215,15 @@ class MinesweeperAI():
         # 3) add neighbors of the cell to the self.knowledge
         i,j = cell
         cell_neighbors = []
-        row = i-1
-        column = j-1
+        row_range = i-1
+        column_range = j-1
 
         # Out of range problem on the edges
-        for row in range(i-1,i+2):
-            for column in range(j-1,j+2):
-                neighbor_cell = (row,column)
-                cell_neighbors.append(neighbor_cell)
+        for row in range(row_range,row_range+3):
+            for column in range(column_range,column_range+3):
+                if not (row < 0 or column < 0 or row > self.width or column > self.height):
+                    neighbor_cell = (row,column)
+                    cell_neighbors.append(neighbor_cell)
 
         cell_neighbors.remove(cell)
             
