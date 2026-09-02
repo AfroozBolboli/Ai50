@@ -218,6 +218,8 @@ class MinesweeperAI():
         row_range = i-1
         column_range = j-1
 
+        final_count = count
+
         for row in range(row_range,row_range+3):
             for column in range(column_range,column_range+3):
                 # Check so it is not out of range
@@ -226,21 +228,24 @@ class MinesweeperAI():
                     if (row,column) not in self.mines or self.safes:
                         neighbor_cell = (row,column)
                         cell_neighbors.append(neighbor_cell)
+                    if (row,column) in self.mines or self.safes:
+                        final_count -= 1
 
         cell_neighbors.remove(cell)
 
-        if len(cell_neighbors) == count:
+        if len(cell_neighbors) == final_count:
             for cell in cell_neighbors:
                 self.mark_mine(cell)
         elif len(cell_neighbors) == 0:
             for cell in cell_neighbors:
                 self.mark_safe(cell)
         else:
-            sentence = Sentence(cell_neighbors,count)
+            sentence = Sentence(cell_neighbors,final_count)
             self.knowledge.append(sentence)
         
         #  4) Mark any additional cells as safe or as mines
         # if it can be concluded based on the AI's knowledge base
+
 
 
     def make_safe_move(self):
