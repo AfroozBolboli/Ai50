@@ -243,8 +243,22 @@ class MinesweeperAI():
             sentence = Sentence(cell_neighbors,final_count)
             self.knowledge.append(sentence)
         
-        #  4) Mark any additional cells as safe or as mines
+        # 4) Mark any additional cells as safe or as mines
         # if it can be concluded based on the AI's knowledge base
+
+        # potential bugs modifiying while looping
+        # known_mines and known_safe does not return boolean 
+        for sentence in self.knowledge:
+            cells = sentence.cells
+            cells_count = sentence.count
+
+            if sentence.known_mines():
+                for cell in cells:
+                    self.mark_mine(cell)
+            elif sentence.known_safes():
+                for cell in cells:
+                    self.mark_safe(cell)
+            
 
 
 
