@@ -246,20 +246,25 @@ class MinesweeperAI():
         # 4) Mark any additional cells as safe or as mines
         # if it can be concluded based on the AI's knowledge base
 
-        # potential bugs modifiying while looping
-        # known_mines and known_safe does not return boolean 
+        # To avoid modifiying while in loop 
+        identified_mines = []
+        identified_safe = []
+        
         for sentence in self.knowledge:
             cells = sentence.cells
-            cells_count = sentence.count
 
-            if sentence.known_mines():
-                for cell in cells:
-                    self.mark_mine(cell)
-            elif sentence.known_safes():
-                for cell in cells:
-                    self.mark_safe(cell)
+            if len(sentence.known_mines()) > 0:
+                identified_mines.append(cells)
+            elif len(sentence.known_safes()) > 0:
+                identified_safe.append(cells)
             
+        for current_sentence in identified_mines:
+            for current_cell in current_sentence:
+                self.mark_mine(current_cell)
 
+        for current_sentence in identified_safe:
+            for current_cell in current_sentence:
+                self.mark_safe(current_cell)
 
 
     def make_safe_move(self):
