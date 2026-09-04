@@ -62,6 +62,7 @@ class Minesweeper():
         print("--" * self.width + "-")
 
     def is_mine(self, cell):
+        
         i, j = cell
         return self.board[i][j]
 
@@ -221,7 +222,7 @@ class MinesweeperAI():
         for row in range(row_range,row_range+3):
             for column in range(column_range,column_range+3):
                 # Check so it is not out of range
-                if not (row < 0 or column < 0 or row > self.width or column > self.height):
+                if not (row < 0 or column < 0 or row > self.height - 1 or column > self.width - 1):
                     # Only include cells whose state is still undetermined in the sentence
                     if (row,column) not in self.mines or self.safes:
                         neighbor_cell = (row,column)
@@ -314,8 +315,8 @@ class MinesweeperAI():
 
         if  current_moves_count < board_size and len(random_moves) == 0:
             print("height is", self.height)
-            x = random.randint(0, self.height-1)
-            y = random.randint(0, self.width-1)
+            x = random.randint(0, self.width-1)
+            y = random.randint(0, self.height-1)
             print("move is", x,y)
             random_moves.append((x,y))
 
