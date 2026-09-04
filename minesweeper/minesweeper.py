@@ -7,7 +7,7 @@ not yet known to be either safe or mines. This means that, once we
 know whether a cell is a mine or not, we can update our sentences to 
 simplify them and potentially draw new conclusions.
 
-if variable == count all mine 
+if variable == cou```````nt all mine 
 if all variable == 0 all safe 
 
 More generally, any time we have two sentences set1 = count1 and 
@@ -203,8 +203,6 @@ class MinesweeperAI():
         This function should:
             Be sure to only include cells whose state is still undetermined in the sentence
 
-            5) add any new sentences to the AI's knowledge base
-               if they can be inferred from existing new knowledge
         """
         # 1) mark the cell as a move that has been made
         self.moves_made.add(cell)
@@ -249,7 +247,7 @@ class MinesweeperAI():
         # To avoid modifiying while in loop 
         identified_mines = []
         identified_safe = []
-        
+
         for sentence in self.knowledge:
             cells = sentence.cells
 
@@ -257,7 +255,8 @@ class MinesweeperAI():
                 identified_mines.append(cells)
             elif len(sentence.known_safes()) > 0:
                 identified_safe.append(cells)
-            
+
+        # maybe it should check if the set is empty or not
         for current_sentence in identified_mines:
             for current_cell in current_sentence:
                 self.mark_mine(current_cell)
@@ -266,6 +265,8 @@ class MinesweeperAI():
             for current_cell in current_sentence:
                 self.mark_safe(current_cell)
 
+        # 5) add any new sentences to the AI's knowledge base
+        # if they can be inferred from existing new knowledge
 
     def make_safe_move(self):
         """
@@ -298,14 +299,25 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
+        print("inside random move function")
         random_moves = []
+
         # Choose cells inside knowledge that are not in mine set or in moves_made list
         for sentence in self.knowledge:
-            cells, count = sentence
-            for cell in cells:
+            for cell in sentence.cells:
                 if cell not in self.moves_made:
                     if cell not in self.mines:
                         random_moves.append(cell)
+
+        board_size = self.height * self.width
+        current_moves_count = len(self.mines) + len(self.safes)
+
+        if  current_moves_count < board_size and len(random_moves) == 0:
+            print("height is", self.height)
+            x = random.randint(0, self.height-1)
+            y = random.randint(0, self.width-1)
+            print("move is", x,y)
+            random_moves.append((x,y))
 
         if len(random_moves) > 0:
             return random_moves[0]
